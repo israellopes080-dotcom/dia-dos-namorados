@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para o Meu Amor ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-bg: #ffb6c1;
+            --dark-pink: #c2185b;
+            --paper-color: #fff9f0;
+        }
+
+        body {
+            margin: 0;
+            background-color: #0d1117;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        .card {
+            width: 350px;
+            height: 600px;
+            background-color: var(--pink-bg);
+            border-radius: 25px;
+            position: relative;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .screen { display: none; width: 100%; flex-direction: column; align-items: center; height: 100%; justify-content: center; z-index: 2; }
+        .active { display: flex; }
+
+        img.gif-display { width: 140px; border-radius: 15px; margin-bottom: 10px; }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .btn-yes { background: #ff4d4d; color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; font-weight: bold; animation: pulse 1.5s infinite; transition: 0.3s; }
+        .btn-yes:hover { transform: scale(1.1); animation: none; }
+        .btn-no { background: #4d4dff; color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; transition: 0.2s; }
+        .btn-quiz { background: white; border: none; padding: 12px; margin: 5px; width: 95%; border-radius: 10px; cursor: pointer; font-weight: 600; color: #333; font-size: 0.8em; transition: 0.2s; }
+        .btn-quiz:hover { background: #f0f0f0; transform: scale(1.02); }
+        .btn-back { background: rgba(255,255,255,0.4); border: 1px solid var(--dark-pink); color: var(--dark-pink); padding: 5px 15px; border-radius: 15px; cursor: pointer; font-size: 0.8em; margin-top: 10px; }
+
+        .Happy__Birthday { font-family: 'Great Vibes', cursive; color: var(--dark-pink); font-size: 2.2em; margin: 5px 0; }
+
+        .gift-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .gift-box { background: white; padding: 15px; border-radius: 15px; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
+        .gift-box:hover { transform: translateY(-5px); }
+
+        .quiz-step { display: none; width: 100%; flex-direction: column; align-items: center; }
+        .active-step { display: flex; }
+
+        .letter-paper { background: var(--paper-color); padding: 15px; border-radius: 10px; color: #4a0e0e; text-align: left; font-size: 0.8em; max-height: 280px; overflow-y: auto; border-left: 5px solid var(--dark-pink); }
+        .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; max-height: 350px; overflow-y: auto; }
+        .photo-item img { width: 100%; height: 110px; object-fit: cover; border-radius: 8px; border: 2px solid white; }
+        .story-photo {
+            width: 85%;
+            max-width: 300px;
+            max-height: 250px;
+
+            object-fit: cover;
+
+            border-radius: 15px;
+            border: 3px solid white;
+
+            margin: 10px 0;
+        }
+        .story-video {
+            width: 65%;
+            max-width: 210px;
+            height: auto;
+            border-radius: 15px;
+        }
+
+        .heart { width: 25px; height: 25px; position: absolute; background-image: url('https://cdn-icons-png.flaticon.com/512/833/833472.png'); background-size: contain; background-repeat: no-repeat; animation: fall linear forwards; pointer-events: none; z-index: 1; }
+        @keyframes fall { 0% { transform: translateY(-50px) rotate(0deg); opacity: 1; } 100% { transform: translateY(650px) rotate(360deg); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <audio id="mySong" src="assets/music/musica.mp3" loop></audio>
+
+    <div class="card" id="mainCard">
+        <div id="screen1" class="screen active">
+            <img src="assets/gifs/ursinho1.gif" class="gif-display">
+            <h2>Posso te mostrar uma surpresa? ❤️</h2>
+            <div class="btn-container">
+                <button class="btn-yes" onclick="startExperience()">SIM ❤️</button>
+                <button class="btn-no" onclick="fujir()">NÃO 😒</button>
+            </div>
+        </div>
+
+        <div id="screen2" class="screen"><img src="assets/gifs/ursinho2.gif" class="gif-display"><h2>Tem mesmo certeza? 🤨</h2><button class="btn-yes" onclick="nextScreen(3)">SIM ❤️</button></div>
+        <div id="screen3" class="screen"><img src="assets/gifs/galinha.gif" class="gif-display"><h2>Sei não, ein.....!! 😑</h2><button class="btn-yes" onclick="nextScreen(4)">SIM ❤️</button></div>
+        <div id="screen4" class="screen"><img src="assets/gifs/gato.gif" class="gif-display"><h2>Última chance de mudar de ideia 😼</h2>
+            <div class="btn-container">
+                <button class="btn-yes" onclick="nextScreen(5)">Tenho certeza!😁</button>
+               <button id="btnTeimoso" class="btn-no" onclick="mudarTexto()">NÃO 😒</button>
+            </div>
+        </div>
+
+        <div id="screen5" class="screen">
+            <img src="assets/gifs/ursinho3.gif" class="gif-display">
+            <h1 class="Happy__Birthday">Feliz Dia dos Namorados, meu amor ❤️</h1>
+            <button class="btn-yes" onclick="nextScreen(6)">ABRIR SURPRESA 🎁</button>
+        </div>
+
+        <div id="screen6" class="screen">
+
+            <h2 class="Happy__Birthday">
+                Antes de qualquer coisa...
+            </h2>
+
+            <p style="font-size:1em; padding:0 20px;">
+                Eu queria te lembrar de uma coisa.
+            </p>
+
+            <p style="font-size:0.9em; padding:0 20px;">
+                Tudo isso começou há algum tempo...
+                e desde então você se tornou uma das partes mais importantes da minha vida. ❤️
+            </p>
+
+            <button class="btn-yes" onclick="nextScreen(7)">
+                Continuar ❤️
+            </button>
+
+        </div>
+
+        <div id="screen7" class="screen">
+
+            
+            <div id="step1" class="quiz-step active-step">
+                <p style="font-size: 0.9em;">1) Qual desses momentos mais te traz felicidade ao lembrar?</p>
+                <button class="btn-quiz" onclick="goStep(2)">A) O pedido de namoro.</button>
+                <button class="btn-quiz" onclick="goStep(2)">B) Quando começamos a descobrir nossas igualdades mais loucas.</button>
+                <button class="btn-quiz" onclick="goStep(2)">C) O dia que voltamos rindo da sorveteria.</button>
+            </div>
+
+            <div id="step2" class="quiz-step">
+                <p style="font-size: 0.9em;">2) O que eu mais amo observar em você?</p>
+                <button class="btn-quiz" onclick="goStep(3)">A) Seu sorriso.</button>
+                <button class="btn-quiz" onclick="goStep(3)">B) Seu jeito meigo.</button>
+                <button class="btn-quiz" onclick="goStep(3)">C) Quando você fala sobre algo que ama.</button>
+            </div>
+
+            <div id="step3" class="quiz-step">
+                <p style="font-size: 0.9em;">3) O que você acha que faz nosso relacionamento ser diferente?</p>
+                <button class="btn-quiz" onclick="goStep(4)">A) A forma como conversamos.</button>
+                <button class="btn-quiz" onclick="goStep(4)">B) A forma como cuidamos um do outro.</button>
+                <button class="btn-quiz" onclick="goStep(4)">C) A forma como crescemos juntos.</button>
+            </div>
+
+            <div id="step4" class="quiz-step">
+                <p style="font-size: 0.9em;">4) Se você pudesse deixar uma mensagem para nós mesmos daqui a 10 anos, o que ela precisaria lembrar?</p>
+                <button class="btn-quiz" onclick="goStep('ultimaPergunta')">A) Nunca parem de sonhar juntos.</button>
+                <button class="btn-quiz" onclick="goStep('ultimaPergunta')">B) Nunca parem de cuidar um do outro.</button>
+                <button class="btn-quiz" onclick="goStep('ultimaPergunta')">C) Nunca esqueçam o motivo pelo qual se apaixonaram.</button>
+            </div>
+            
+            <div id="stepUltimaPergunta" class="quiz-step">
+
+                <h3 style="color: var(--dark-pink);">
+                    Uma última pergunta ❤️
+                </h3>
+
+                <p style="font-size:0.9em; padding:0 15px;">
+                    Se você pudesse guardar apenas uma lembrança nossa para reviver para sempre,
+                    qual seria?
+                </p>
+
+                <textarea
+                    rows="5"
+                    style="
+                        width:85%;
+                        padding:10px;
+                        border-radius:10px;
+                        resize:none;
+                    "
+                    placeholder="Escreva sua resposta aqui..."
+                ></textarea>
+
+                <br>
+
+                <button class="btn-yes"
+                    onclick="goStep('Final')">
+                    Continuar ❤️
+                </button>
+
+            </div>
+
+
+            <div id="stepFinal" class="quiz-step">
+                <img src="assets/gifs/ursinho1.gif" class="gif-display">
+
+                <p style="font-size:1.5em;">
+                    ❤️
+                </p>
+
+                <p style="padding:0 15px;">
+                    Não importa qual foi sua resposta...
+                    <br><br>
+                    Porque quando penso no meu futuro,
+                    a única coisa que eu tenho certeza
+                    é que gostaria que você estivesse nele. ❤️
+                </p>
+
+                <button class="btn-back" onclick="nextScreen(12)">
+                    Continuar ❤️
+                </button>
+
+            </div>
+        </div>
+        
+
+        <div id="screen8" class="screen">
+            <h2 class="Happy__Birthday">
+                Para a menina que mudou minha vida ❤️
+            </h2>
+
+            <div class="letter-paper">
+                <p style="text-align:center; font-size:2em;">
+                    ❤️
+                </p>
+
+                <p><strong>Meu amor,</strong></p>
+
+                <p>
+                Enquanto eu montava esse presente, revivia nossas fotos e lembranças,
+                percebi uma coisa:
+                </p>
+
+                <p>
+                <strong>A melhor parte da nossa história nunca foram os lugares onde fomos.</strong><br>
+                A melhor parte sempre foi <strong>você<strong>.
+                </p>
+
+                <br>
+
+                <p>
+                Eu amo lembrar das nossas conversas antes mesmo de começarmos a namorar.
+                Quanto mais a gente conversava, mais eu percebia que aquilo que parecia coincidência talvez fosse algo muito maior.
+                </p>
+
+                <p>
+                Nós tínhamos tantas coisas em comum que parecia até brincadeira.
+                </p>
+
+                <br>
+
+                <p>
+                Eu também amo lembrar do dia do sorvete.
+                Da volta para casa rindo sem conseguir parar.
+                </p>
+
+                <p>
+                Eu não lembro de todos os detalhes daquele dia.
+                Mas lembro perfeitamente da felicidade que senti ao ver você sorrindo.
+                </p>
+
+                <br>
+
+                <p>
+                E falando em sorriso...
+                </p>
+
+                <p>
+                Acho que essa sempre vai ser uma das minhas coisas favoritas em você.
+                </p>
+
+                <p>
+                Não qualquer sorriso.
+                Mas aquele sorriso sincero que faz seus olhos se fecharem um pouco e deixa suas bochechas mais vermelhas.
+                </p>
+
+                <p>
+                <strong>Toda vez que vejo esse sorriso, eu me apaixono um pouco mais.</strong>
+                </p>
+
+                <br>
+
+                <p>
+                <strong>Você despertou em mim um desejo de ser melhor.</strong>
+                </p>
+
+                <p>
+                Melhor para mim.<br>
+                Melhor para você.<br>
+                Melhor para as pessoas ao meu redor.
+                </p>
+
+                <p>
+                Desde que você entrou na minha vida,
+                me sinto mais feliz,
+                mais maduro
+                e mais disposto a construir algo bonito para o futuro.
+                </p>
+
+                <br>
+
+                <p>
+                E quando penso nesse futuro,
+                penso em nós.
+                </p>
+
+                <p>
+                ❤️ Uma família feliz.<br>
+                ❤️ Uma família saudável.<br>
+                ❤️ Uma família abençoada por Deus.
+                </p>
+
+                <p>
+                Penso em chegar em casa depois de um dia de trabalho
+                e encontrar você me esperando.
+                </p>
+
+                <p>
+                Penso nos nossos filhos correndo para me abraçar.
+                </p>
+
+                <p>
+                Penso em continuar sendo seu amigo,
+                seu parceiro
+                e escolher você todos os dias.
+                </p>
+
+                <br>
+
+                <p>
+                Obrigado por cada conversa,
+                cada abraço,
+                cada risada
+                e cada momento que vivemos até aqui.
+                </p>
+
+                <p style="text-align:center;">
+                    <strong>Feliz Dia dos Namorados. ❤️</strong>
+                </p>
+
+                <br>
+
+                <p style="text-align:center;">
+                    Com todo o meu amor,
+                </p>
+
+                <p style="text-align:center; font-size:1.2em;">
+                    <strong>Israel ❤️</strong>
+                </p>
+            </div>
+
+            <button class="btn-back" onclick="nextScreen(9)"> Continuar ❤️</button>
+        </div>
+
+        <div id="screen9" class="screen">
+            <h2 class="Happy__Birthday">Nossos Momentos 📸</h2>
+            <div class="photo-grid">
+                <div class="photo-item"><img src="assets/images/foto1.jpeg.jpeg"></div><div class="photo-item"><img src="assets/images/foto2.jpeg.jpeg"></div>
+                <div class="photo-item"><img src="assets/images/foto3.jpeg.jpeg"></div><div class="photo-item"><img src="assets/images/foto4.jpeg.jpeg"></div>
+                <div class="photo-item"><img src="assets/images/foto5.jpeg.jpeg"></div><div class="photo-item"><img src="assets/images/foto6.jpeg.jpeg"></div>
+            </div>
+            <button class="btn-back" onclick="nextScreen(11)">Continuar ❤️</button>
+            
+        </div>
+
+        <div id="screen11" class="screen">
+
+            <h2 class="Happy__Birthday">
+                Já se passaram...
+            </h2>
+
+            <div id="loveCounter"
+                style="
+                    color:#c2185b;
+                    font-size:1.4em;
+                    font-weight:bold;
+                    margin:15px 0;
+                ">
+            </div>
+
+            <p style="font-style: italic; padding:0 20px;">
+                E cada um deles valeu a pena.
+            </p>
+        
+
+            <p style="padding:0 20px;">
+                Desde o dia em que você disse sim. ❤️
+            </p>
+
+            <button class="btn-yes" onclick="startHearts()" style="margin-top: 10px; font-size: 0.7em;"
+            >Pra te lembrar... ✨
+            </button>
+
+        </div>
+
+        <div id="screen12" class="screen">
+
+            <h2 class="Happy__Birthday">
+                Quando tudo começou...
+            </h2>
+
+            <p style="padding:0 20px;">
+                No começo eu tinha certeza de que você estava brincando comigo.
+            </p>
+
+            <p style="padding:0 20px;">
+                E aparentemente você pensava exatamente a mesma coisa. 😅
+            </p>
+
+            <button class="btn-yes" onclick="nextScreen(13)">
+                Continuar ❤️
+            </button>
+
+        </div>
+
+        <div id="screen13" class="screen">
+
+            <h2 class="Happy__Birthday">
+                Nossas Conversas 💬
+            </h2>
+
+            <p style="padding:0 20px;">
+                Lembro-me de quando passávamos horas conversando.
+            </p>
+
+            <p style="padding:0 20px;">
+                Nossas conversas duravam horas, e o mundo sumia tanto que a gente nem percebia a madrugada passando.
+                Quanto mais a gente conversava, mais eu percebia que tínhamos muitas coisas em comum.
+            </p>
+
+            <p style="padding:0 20px;">
+                E quanto mais eu te conhecia...
+                mais eu gostava de você.
+            </p>
+
+            <button class="btn-yes" onclick="nextScreen(14)">
+                Continuar ❤️
+            </button>
+
+        </div>
+
+        <div id="screen14" class="screen">
+
+            <h2 class="Happy__Birthday">
+                Nosso primeiro Date 🍦
+            </h2>
+
+            <p style="padding:0 20px;">
+                Eu tinha planejado te levar para tomar sorvete.
+            </p>
+
+            <p style="padding:0 20px;">
+                Só tinha um pequeno problema...
+            </p>
+
+            <p style="padding:0 20px;">
+                Era domingo pela manhã e a sorveteria estava fechada. 😭
+            </p>
+
+            <p style="padding:0 20px;">
+                Mas, olhando hoje, acho que foi melhor assim.
+            </p>
+
+            <button class="btn-yes" onclick="nextScreen(15)">
+                Continuar ❤️
+            </button>
+
+        </div>
+
+        <div id="screen15" class="screen">
+
+            <h2 class="Happy__Birthday">
+                O Melhor da História ❤️
+            </h2>
+
+            <p style="padding:0 20px;">
+                Porque naquele dia eu descobri uma coisa.
+            </p>
+
+            <p style="padding:0 20px;">
+                O lugar nunca foi a parte mais importante.
+            </p>
+
+            <p style="padding:0 20px;">
+                O melhor de qualquer passeio sempre foi estar com você.
+            </p>
+
+            <button class="btn-yes" onclick="nextScreen(16)">
+                Continuar ❤️
+            </button>
+
+        </div>
+
+        <div id="screen16" class="screen">
+
+            <h2 class="Happy__Birthday">
+                Uma das Minhas Lembranças Favoritas 😂
+            </h2>
+
+            <p style="padding:0 20px;">
+                Eu nem lembro exatamente o motivo.
+            </p>
+
+            <p style="padding:0 20px;">
+                Tinha gente discutindo na rua.
+                Tinha alguma coisa acontecendo.
+                E nós começamos a rir.
+            </p>
+
+            <p style="padding:0 20px;">
+                E continuamos rindo...
+            </p>
+
+            <p style="padding:0 20px;">
+                E rindo...
+            </p>
+
+            <p style="padding:0 20px;">
+                E rindo mais um pouco. 😂
+            </p>
+
+            <button class="btn-yes" onclick="nextScreen(17)">
+                Continuar ❤️
+            </button>
+
+        </div>
+
+        <div id="screen17" class="screen">
+
+            <h2 class="Happy__Birthday">
+                O Que Eu Mais Lembro ❤️
+            </h2>
+
+            <p style="padding:0 20px;">
+                Não é do motivo da risada.
+            </p>
+
+            <p style="padding:0 20px;">
+                Eu lembro de você segurando meu braço.
+            </p>
+
+            <p style="padding:0 20px;">
+                Eu lembro do seu sorriso.
+            </p>
+
+            <p style="padding:0 20px;">
+                E lembro de pensar que queria viver muitos momentos assim ao seu lado.
+            </p>
+
+            <button class="btn-yes" onclick="nextScreen(18)">
+                Continuar ❤️
+            </button>
+
+        </div>
+
+        <div id="screen18" class="screen">
+
+            <h2 class="Happy__Birthday">
+                O Dia Que Mudou Tudo 💍
+            </h2>
+
+            <p style="padding:0 20px;">
+                Eu tinha planejado aquele dia por muito tempo.
+            </p>
+
+            <p style="padding:0 20px;">
+                E mesmo que nem tudo tenha acontecido exatamente como imaginei...
+            </p>
+
+            <p style="padding:0 20px;">
+                Acabou sendo perfeito.
+            </p>
+
+            <button class="btn-yes" onclick="nextScreen(19)">
+                Continuar ❤️
+            </button>
+
+        </div>
+
+        <div id="screen19" class="screen">
+
+            <h2 class="Happy__Birthday">
+                O Parque 🌳
+            </h2>
+
+            <p style="padding:0 20px;">
+                A gente fez um piquenique.
+            </p>
+
+            <p style="padding:0 20px;">
+                Caminhou junto.
+            </p>
+
+            <p style="padding:0 20px;">
+                E eu tentava agir normalmente...
+            </p>
+
+            <p style="padding:0 20px;">
+                Mesmo com o coração acelerado. 😅
+            </p>
+
+            <button class="btn-yes" onclick="nextScreen(20)">
+                Continuar ❤️
+            </button>
+
+        </div>
+
+        <div id="screen20" class="screen">
+
+            <h2 class="Happy__Birthday">
+                Uma Pequena Mentira 😅
+            </h2>
+
+            <p style="padding:0 20px;">
+                Eu disse que queria gravar uma trend.
+            </p>
+
+            <p style="padding:0 20px;">
+                Mas a verdade é que eu estava tentando esconder uma surpresa.
+            </p>
+
+            <p style="padding:0 20px;">
+                E estava ficando cada vez mais nervoso.
+            </p>
+
+            <button class="btn-yes" onclick="nextScreen(21)">
+                Continuar ❤️
+            </button>
+
+        </div>
+
+        <div id="screen21" class="screen">
+
+            <h2 class="Happy__Birthday">
+                O Dia Que Mudou Tudo 🌳
+            </h2>
+
+            <img src="assets/images/parque1.jpeg" class="story-photo">
+
+            <p style="padding:0 20px;">
+                Esse parecia ser apenas mais um dia ao seu lado.
+            </p>
+
+            <p style="padding:0 20px;">
+                Mas eu sabia que estava prestes a criar uma das minhas memórias favoritas.
+            </p>
+
+            <button class="btn-yes" onclick="nextScreen(22)">
+                Continuar ❤️
+            </button>
+
+        </div>
+
+        <div id="screen22" class="screen">
+
+            <h2 class="Happy__Birthday">
+                A Surpresa 💐
+            </h2>
+
+            <img src="assets/images/buque.jpeg" class="story-photo">
+
+            <p style="padding:0 20px;">
+                Eu tentei agir normalmente...
+                Mas por dentro eu estava nervoso.
+            </p>
+
+            <p style="padding:0 20px;">
+                Afinal, eu estava prestes a te fazer uma pergunta que mudaria tudo.
+            </p>
+
+            <button class="btn-yes" onclick="nextScreen(23)">
+                Continuar ❤️
+            </button>
+
+        </div>
+
+        <div id="screen23" class="screen">
+
+            <h2 class="Happy__Birthday">
+                A Melhor Resposta ❤️
+            </h2>
+
+            <img src="assets/images/aliancas.jpeg" class="story-photo">
+
+            <p style="padding:0 20px;">
+                Depois de todo o nervosismo...
+            </p>
+
+            <p style="padding:0 20px;">
+                Veio a resposta que eu mais queria ouvir.
+            </p>
+
+            <p style="padding:0 20px;">
+                Você disse sim. ❤️
+            </p>
+
+            <button class="btn-yes" onclick="nextScreen(24)">
+                Continuar ❤️
+            </button>
+
+        </div>
+
+        <div id="screen24" class="screen">
+
+            <h2 class="Happy__Birthday">
+                E por sorte... ❤️
+            </h2>
+
+            <p style="padding:0 20px;">
+                Esse momento ficou gravado.
+            </p>
+
+            <p style="padding:0 20px;">
+                E eu posso revivê-lo sempre que quiser.
+            </p>
+
+            <video controls class="story-video">
+                <source src="assets/videos/pedido.mp4" type="video/mp4">
+                Seu navegador não suporta vídeo.
+            </video>
+
+            <button class="btn-yes" onclick="nextScreen(8)">
+                Continuar ❤️
+            </button>
+
+        </div>
+        <div id="screen10" class="screen">
+
+            <h2 class="Happy__Birthday">❤️ Para o Meu Futuro ❤️</h2>
+
+            <p style="padding:0 20px;">
+                Antes de você, eu tinha sonhos.
+            </p>
+
+            <p style="padding:0 20px;">
+                Depois de você, eu comecei a imaginar um futuro.
+            </p>
+
+            <p>
+                Um futuro com mais risadas.
+            </p>
+
+            <p>
+                Mais histórias.
+            </p>
+
+            <p>
+                Mais momentos simples que se tornam especiais apenas porque estamos juntos.
+            </p>
+
+            <p style="padding:0 20px;">
+                Obrigado por fazer parte da minha vida.
+            </p>
+
+            <p style="padding:0 20px;">
+                E obrigado por ser uma das melhores escolhas que eu já fiz.
+            </p>
+
+            <p style="font-size:1.5em;">
+                ❤️
+            </p>
+
+            <p>
+                Com amor,<br>
+                Israel
+            </p>
+
+        </div>
+    </div>
+
+    <script>
+        function startExperience() {
+            // Tenta dar play na música ao interagir pela primeira vez
+            const music = document.getElementById('mySong');
+            music.play().catch(e => console.log("Aguardando interação para áudio"));
+            nextScreen(2);
+        }
+
+        function nextScreen(num) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen' + num).classList.add('active');
+        }
+
+        
+        // 1. Função para o primeiro botão (fazer fugir no clique)
+        function fujir() {
+            // Procura o botão NÃO dentro da tela 1
+            const btn = document.querySelector('#screen1 .btn-no');
+            const card = document.getElementById('mainCard');
+            
+            // Deixei o cálculo idêntico ao seu original para manter o comportamento perfeito
+            const maxX = card.clientWidth - btn.offsetWidth - 20;
+            const maxY = card.clientHeight - btn.offsetHeight - 20;
+            
+            btn.style.position = 'absolute';
+            btn.style.left = Math.random() * maxX + 'px';
+            btn.style.top = Math.random() * maxY + 'px';
+        }
+
+        // 2. Variáveis e Função para o segundo botão (mudar as frases)
+        const frases = ["Não? 🥺", "Pensa bem... 💔", "Nem pensar! ❌", "Coração de pedra 😢", "Errou o botão? 👀"];
+        let cliqueCount = 0;
+
+        function mudarTexto() {
+            const btn = document.getElementById('btnTeimoso');
+            
+            if (cliqueCount < frases.length) {
+                btn.innerText = frases[cliqueCount];
+                cliqueCount++;
+            } else {
+                // Quando as frases acabam, ele se transforma no botão de SIM
+                btn.innerText = "SIM! ❤️";
+                btn.className = "btn-yes";
+                // Altera o clique para avançar para a próxima tela (Tela 5)
+                btn.onclick = () => nextScreen(5); 
+            }
+        }
+
+        function startGiftQuiz() { nextScreen(7); goStep(1); }
+
+       function goStep(stepId) {
+
+            document.querySelectorAll('.quiz-step')
+                .forEach(s => s.classList.remove('active-step'));
+
+            if(stepId === 'final') {
+
+                document.getElementById('stepFinal')
+                    .classList.add('active-step');
+
+            }
+
+            else if(stepId === 'ultimaPergunta') {
+
+                document.getElementById('stepUltimaPergunta')
+                    .classList.add('active-step');
+
+            }
+
+            else {
+
+                document.getElementById('step' + stepId)
+                    .classList.add('active-step');
+
+            }
+        }
+
+        function startHearts() {
+            nextScreen(10);
+            const card = document.getElementById('mainCard');
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.style.left = Math.random() * (card.clientWidth - 30) + "px";
+                heart.style.top = "-40px";
+                heart.style.animationDuration = (Math.random() * 2 + 2) + "s";
+                card.appendChild(heart);
+                setTimeout(() => heart.remove(), 4000);
+            }, 250);
+        }
+
+        const namoroInicio = new Date("2025-09-27T00:00:00");
+
+        function atualizarContador() {
+
+            const agora = new Date();
+
+            const diferenca = agora - namoroInicio;
+
+            const dias = Math.floor(
+                diferenca / (1000 * 60 * 60 * 24)
+            );
+
+            const horas = Math.floor(
+                diferenca / (1000 * 60 * 60)
+            );
+
+            const minutos = Math.floor(
+                diferenca / (1000 * 60)
+            );
+
+            document.getElementById("loveCounter").innerHTML = `
+                ${dias} dias ❤️<br>
+                ${horas.toLocaleString('pt-BR')} horas ❤️<br>
+                ${minutos.toLocaleString('pt-BR')} minutos ❤️
+            `;
+        }
+
+        atualizarContador();
+        
+    </script>
+</body>
+</html>
